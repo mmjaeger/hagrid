@@ -37,6 +37,7 @@ $hagrid-breakpoints:
 /// @property {String}
 
 $hagrid-item-selector: "> *" !default;
+$hagrid-gutter-global: false !global;
 
 @import "hagrid/core";
 @import "hagrid/functions";
