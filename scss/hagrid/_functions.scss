@@ -27,6 +27,7 @@
   }
 
   @else {
+
     $width-detected: false;
 
     @for $i from 1 through length($widths) {
@@ -34,7 +35,12 @@
 
       // * If a general width is passed in, use it
       @if type-of($width) == number {
-        #{$prop}: calculate-width($width);
+        content: #{$hagrid-gutter-global};
+        @if $prop == width and unitless($width) == true {
+          #{$prop}: calc( #{calculate-width($width)} - #{$hagrid-gutter-global};
+        } @else {
+            #{$prop}: calculate-width($width);
+        }
         $width-detected: true;
       }
       // * If false is passed, assign no width
@@ -46,6 +52,13 @@
         flex: 1 1 auto;
         $width-detected: true;
       }
+
+      // * If auto is passed, assign no width
+      @elseif $width == equal {
+        flex: 1 0 0%;
+        $width-detected: true;
+      }
+
       // * Handle responsive args
       @else {
         // * "md 2/3"-synthax
@@ -64,12 +77,23 @@
         @if $bp != false {
           @include bp(#{$key}) {
             @if type-of($value) == number {
-              #{$prop}: calculate-width($value);
+              content: #{$key}':' #{$hagrid-gutter-global};
+              @if $prop == width and unitless($value) == true {
+                #{$prop}: calc( #{calculate-width($value)} - #{$hagrid-gutter-global};
+              } @else {
+                  #{$prop}: calculate-width($value);
+              }
             }
 
             @else if $value == auto {
               flex: 1 1 auto;
               width: auto;
+            }
+
+            // * If auto is passed, assign no width
+            @elseif $width == equal {
+              flex: 1 0 0%;
+              $width-detected: true;
             }
 
             @else if $value == false {
@@ -82,13 +106,17 @@
           @warn "You are trying to assign a width to an unknown or invalid breakpoint: #{$key}";
         }
       }
+
     }
 
     // * If only responsive params are passed, default to mobile-first
     @if $width-detected == false and $prop == width {
       #{$prop}: 100%;
     }
+
+
   }
+
 }
 
 /// Calculate a percentage value from a fraction
@@ -194,6 +222,9 @@
     @warn "`str-starts-with` function expecting a string for $needle; #{type-of($needle)} given.";
     @return false;
   }
+
+  @return str-slice($string, -1 * str-length($needle)) == $needle;
+}
 
   @return str-slice($string, -1 * str-length($needle)) == $needle;
 }
