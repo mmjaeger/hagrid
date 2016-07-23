@@ -39,6 +39,7 @@
 
     @elseif hagrid-gutter-exists($modifier) {
       $is-not-spacing: false;
+
     }
 
     @include grid-modifier($modifier);
@@ -53,12 +54,16 @@
   }
 
   @if $is-not-spacing == true {
-    margin-left: -$gutter;
+    $hagrid-gutter-global: $gutter !global;
+    margin-right: $gutter / -2;
+    margin-left:  $gutter / -2;
   }
 
   #{$hagrid-item-selector} {
+
     @if $is-not-spacing == true {
-      padding-left: $gutter;
+      margin-right: $gutter / 2;
+      margin-left:  $gutter / 2;
     }
   }
 }
@@ -113,10 +118,13 @@
 
     @if hagrid-gutter-exists($modifier) {
       $gutter: hagrid-gutter-get($modifier);
-      margin-left: -$gutter;
+      $hagrid-gutter-global: $gutter !global;
+      margin-right: $gutter / -2;
+      margin-left:  $gutter / -2;
 
       #{$hagrid-item-selector} {
-        padding-left: $gutter;
+        margin-right: $gutter / 2;
+        margin-left:  $gutter / 2;
       }
     }
 
