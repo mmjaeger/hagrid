@@ -15,7 +15,7 @@
   display: flex;
   flex: initial;
   list-style: none;
-
+  $hagrid-gutter-global: false;
   @include grid-modifiers($modifiers...);
 }
 
